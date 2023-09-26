@@ -1,16 +1,14 @@
-import logo from "./logo.svg";
-import "./App.css";
-import Products from "./pages/Products";
+import Models from "./pages/Models";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import AddProduct from "./pages/AddProduct";
+import AddModel from "./pages/AddModel";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/addProduct" element={<AddProduct />} />
-        <Route path="/" element={<Products/>} />
-        <Route path="/updateProduct/:id" element={<AddProduct />} />
+        <Route path="/addModel" element={<AddModel />} />
+        <Route path="/" element={<Models/>} />
+        <Route path="/updateModel/:id" element={<AddModel />} />
 
       </Routes>
     </BrowserRouter>

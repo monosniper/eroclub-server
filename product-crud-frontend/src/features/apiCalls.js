@@ -1,8 +1,8 @@
 import axios from "axios";
 
-export const getProducts = async () => {
+export const getModels = async () => {
   try {
-    const res = await axios.get("http://localhost:8081/products/");
+    const res = await axios.get("http://localhost:8081/models/");
     return res.data;
   } catch (err) {
     console.log(err);
@@ -10,9 +10,9 @@ export const getProducts = async () => {
   }
 };
 
-export const addProduct = async (product) => {
+export const addModel = async (model) => {
   try {
-    const res = await axios.post("http://localhost:8081/products/", product);
+    const res = await axios.post("http://localhost:8081/models/", model);
     return res.data;
   } catch (err) {
     console.log(err);
@@ -20,11 +20,11 @@ export const addProduct = async (product) => {
   }
 };
 
-export const updateProduct = async (product, productId) => {
+export const updateModel = async (model, modelId) => {
   try {
     const res = await axios.put(
-      "http://localhost:8081/products/" + productId,
-      product
+      "http://localhost:8081/models/" + modelId,
+      model
     );
     return res.data;
   } catch (err) {
@@ -33,19 +33,19 @@ export const updateProduct = async (product, productId) => {
     };
   }
 };
-export const deleteProduct = async (productId, productThumbnail) => {
+export const deleteModel = async (modelId, modelThumbnail) => {
   try {
     const res = await axios.delete(
-      "http://localhost:8081/products/" + productId
+      "http://localhost:8081/models/" + modelId
     );
     return res.data;
   } catch (err) {
     return { error: err };
   }
 };
-export const getProductById = async (id) => {
+export const getModelById = async (id) => {
   try {
-    const res = await axios.get("http://localhost:8081/products/" + id);
+    const res = await axios.get("http://localhost:8081/models/" + id);
     return res.data
   } catch (err) {
     return {error: err.message}
@@ -53,7 +53,7 @@ export const getProductById = async (id) => {
 };
 
 
-export const uploadProductThumbnail = async (formData) => {
+export const uploadModelThumbnail = async (formData) => {
   try {
     const res = await axios.post(
       "http://localhost:8081/thumbnailUpload/",

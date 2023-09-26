@@ -5,13 +5,11 @@ const cors = require("cors");
 const multer = require("multer");
 const fs = require("fs");
 require('dotenv').config()
-console.log(process.env)
-console.log(process.env.DB_PASSWORD)
 const db = mysql.createConnection({
-  host: "localhost",
+  host: "fc404394.mysql.tools",
   user: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
-  database: "products",
+  database: "fc404394_eroclub",
 });
 
 const storage = multer.diskStorage({
@@ -20,7 +18,7 @@ const storage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     console.log(req.body, "in");
-    cb(null, `${req.body.productId}${path.extname(file.originalname)}`);
+    cb(null, `${req.body.modelId}${path.extname(file.originalname)}`);
   },
 });
 
@@ -32,26 +30,25 @@ app.use(express.json())
 app.use('/uploads', express.static(path.join(__dirname ,'uploads')));
 
 
-app.post("/thumbnailUpload", upload.single("productThumbnail"), (req, res) => {
+app.post("/thumbnailUpload", upload.single("thumbnail"), (req, res) => {
   try {
-    console.log(req.file) ;
+    console.log('file', req.file) ;
     return res.json({ data: req.file.filename });
   } catch (err) {
     res.json({ error: err.message });
   }
 });
 
-app.get("/products", (req, res) => {
-    const q = "select * from product";
+app.get("/models", (req, res) => {
+    const q = "select * from models";
     db.query(q, (err, data) => {
       console.log(err, data);
       if (err) return res.json({ error: err.sqlMessage });
       else return res.json({ data });
     });
   });
-  app.post("/products", (req, res) => {
-    const q = `insert into product(productId, productTitle, productDescription, productPrice, availableQuantity, productThumbnail)
-      values(?)`;
+  app.post("/models", (req, res) => {
+    const q = `insert into models (modelId,name,phone,age,height,breast,location,hour,hour_2,night,is_out,description,time,services,thumbnail) values(?)`;
     const values = [...Object.values(req.body)];
     console.log("insert", values);
     db.query(q, [values], (err, data) => {
@@ -61,9 +58,9 @@ app.get("/products", (req, res) => {
     });
   });
   
-  app.get("/products/:productId", (req, res) => {
-    const id = req.params.productId;
-    const q = "SELECT * FROM product where productId=?";
+  app.get("/models/:modelId", (req, res) => {
+    const id = req.params.modelId;
+    const q = "SELECT * FROM models where modelId=?";
     db.query(q, [id], (err, data) => {
       console.log(err, data);
       if (err) return res.json({ error: err.sqlMessage });
@@ -71,19 +68,24 @@ app.get("/products", (req, res) => {
     });
   });
   
-  app.put("/products/:productId", (req, res) => {
-    const id = req.params.productId;
+  app.put("/models/:modelId", (req, res) => {
+    const id = req.params.modelId;
     console.log("updated " + req.body);
     const data = req.body;
-    if (data.productPrice) data.productPrice = Number.parseInt(data.productPrice);
-    if (data.availableQuantity)
-      data.availableQuantity = Number.parseInt(data.availableQuantity);
+
+    if (data.age) data.age = Number.parseInt(data.age);
+    if (data.height) data.height = Number.parseInt(data.height);
+    if (data.breast) data.breast = Number.parseInt(data.breast);
+    if (data.hour) data.hour = Number.parseInt(data.hour);
+    if (data.hour_2) data.hour_2 = Number.parseInt(data.hour_2);
+    if (data.night) data.night = Number.parseInt(data.night);
+
     const q =
-      "update product set " +
+      "update models set " +
       Object.keys(data)
         .map((k) => `${k} = ?`)
         .join(",") +
-      " where productId='" +
+      " where modelId='" +
       id +
       "'";
     console.log(q);
@@ -96,12 +98,12 @@ app.get("/products", (req, res) => {
     });
   });
   
-  app.delete("/products/:productId", (req, res) => {
-    const id = req.params.productId;
+  app.delete("/models/:modelId", (req, res) => {
+    const id = req.params.modelId;
     console.log("deleting " + id, req.body);
-    const { productThumbnail } = req.body;
+    const { thumbnail } = req.body;
     console.log(req.body);
-    const q = `DELETE FROM product WHERE productId= ?`;
+    const q = `DELETE FROM models WHERE modelId= ?`;
     db.query(q, [id], (err, data) => {
       console.log(err, data);
       if (err) return res.json({ error: err.sqlMessage });
