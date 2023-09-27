@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { deleteModel } from "../features/apiCalls";
-const BASE_API_URL = "http://localhost:8081";
+const BASE_API_URL = "http://5.45.92.200:8081";
 
 const Model = ({
   modelId,

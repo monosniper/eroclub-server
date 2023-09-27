@@ -7,7 +7,7 @@ import {
   uploadModelThumbnail,
 } from "../features/apiCalls";
 
-const BASE_API_URL = "http://localhost:8081";
+const BASE_API_URL = "http://5.45.92.200:8081";
 const AddModel = () => {
   const { id } = useParams();
   const [defaultValue, setDeafaultValue] = useState({
